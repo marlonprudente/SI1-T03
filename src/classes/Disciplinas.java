@@ -5,7 +5,6 @@
  */
 package classes;
 
-import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 
 /**
@@ -14,18 +13,22 @@ import java.util.ArrayList;
  */
 public class Disciplinas {
     private String id;
+    private String creditos;
+    private String[] horarios; 
     private String disciplina;
-    private Integer turma;
-    private Integer creditos;
-    private Integer[] horarios;    
+    private String turma;      
     
     public Disciplinas(String linha){
-       String[] array = linha.split(",");
+       String[] array = linha.split(",");       
        id = array[0];
-       creditos = parseInt(array[1]);
-       for(int i = 2; i< array.length;i++){
-           
-       }
+       creditos = array[1];
+       System.out.println(array.length);
+       
+    }
+    
+    public void ShowIt(){
+        System.out.println(id);
+        System.out.println(creditos);
     }
     
 }

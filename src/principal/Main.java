@@ -26,12 +26,13 @@ public class Main {
         BufferedReader reader = new BufferedReader(streamReader);
         String linha;
        ArrayList<String> disciplinas = new ArrayList<String>();
-       
-       Disciplinas disc;      
-       
-       while ((linha = reader.readLine()) != null) {
-          disc = new Disciplinas(linha);           
-        }
+       linha = reader.readLine();
+       Disciplinas disc = new Disciplinas(linha);
+        disc.ShowIt();
+       //while ((linha = reader.readLine()) != null) {
+        //  disc = new Disciplinas(linha); 
+      //    disc.ShowIt();          
+     //   }
        
        
        
