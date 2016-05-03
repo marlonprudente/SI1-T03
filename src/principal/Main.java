@@ -29,7 +29,7 @@ public class Main {
        linha = reader.readLine();
        Disciplinas disc = new Disciplinas(linha);
        Calendario calend = new Calendario();
-       calend.ShouIt();
+       calend.ShowIt();
        //disc.ShowIt();    
        
        

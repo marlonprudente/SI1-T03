@@ -17,10 +17,10 @@ public class Calendario {
     }
     
     
-    public void ShouIt(){
+    public void ShowIt(){
         for(int i = 0;i<5;i++){
             for(int j = 0;j<16;j++){
-                System.out.println("Hora: " + (j + 7) + " Dia: " + (i + 2) + " -> " + calendario[j][i]);
+                System.out.println("Dia: " + (i + 2) + " Hora: " + (j + 7) + " -> " + calendario[j][i]);
             }
         }
     }
