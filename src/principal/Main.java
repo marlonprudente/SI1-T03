@@ -28,7 +28,9 @@ public class Main {
        ArrayList<String> disciplinas = new ArrayList<String>();
        linha = reader.readLine();
        Disciplinas disc = new Disciplinas(linha);
-       disc.ShowIt();    
+       Calendario calend = new Calendario();
+       calend.ShouIt();
+       //disc.ShowIt();    
        
        
        
