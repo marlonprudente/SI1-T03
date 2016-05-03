@@ -16,6 +16,8 @@ public class Disciplinas  {
     private String id;
     private String creditos;
     private String[] horarios; 
+    private String dia;
+    private String[] hora;
     private String disciplina;
     private String turma;      
     
@@ -24,19 +26,35 @@ public class Disciplinas  {
        id = array[0];
        creditos = array[1];
        String[] array2 = array[2].split(",");
-       //horarios[0] = array[2];
        horarios = new String[array2.length];
        for(int i = 0 ; i < array2.length;i++){
            horarios[i] = array2[i];
        }
-
-       
+    }
+    public void setDisciplina(String id){
+           this.disciplina = id.substring(0,1);
+       }
+    public void setTurma(String id){
+       this.turma = id.substring(1, 2);
+    }
+    public void setHorarios(String[] horarios){
+        /*  for(int i = 0 ; i < horarios.length;i++){
+                   this.dia = horarios[i].substring(0, 1);
+                    this.hora = horarios[i].substring(1, 3);
+       }
+         */
     }
     
     public void ShowIt(){
-        System.out.println(id);
-        System.out.println(creditos);
-        System.out.println(horarios[1]);
+        setDisciplina(id);
+        setTurma(id);
+        System.out.println("Disciplina: " + disciplina);
+        System.out.println("Turma: " + turma);
+        System.out.println("Créditos: " + creditos);
+        for (int i = 0; i < horarios.length; i++){
+            System.out.println("Horarios: " + horarios[i]);
+        }
+        
     }
     
 }
