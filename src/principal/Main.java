@@ -1,6 +1,7 @@
 package principal;
 
 import classes.*;
+import ag.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,20 +21,18 @@ import java.util.ArrayList;
  */
 public class Main {
     public static void main(String[] args) throws IOException {
-        
+        //Set Diciplinas
         FileInputStream stream = new FileInputStream("tar03-tst1.txt");
         InputStreamReader streamReader = new InputStreamReader(stream);
         BufferedReader reader = new BufferedReader(streamReader);
         String linha;
-       ArrayList<String> disciplinas = new ArrayList<String>();
-       linha = reader.readLine();
-       Disciplinas disc = new Disciplinas(linha);
-       Calendario calend = new Calendario();
-       calend.ShowIt();
-       //disc.ShowIt();    
-       
-       
-       
-       
-    }    
+        ArrayList<Disciplinas> disciplinas = new ArrayList<Disciplinas>();
+        while(!(linha = reader.readLine()).isEmpty()){
+           Disciplinas disc = new Disciplinas(linha);
+           disciplinas.add(disc);
+        }
+        //################
+        new AgMain(disciplinas);
+        
+    }
 }

@@ -14,12 +14,10 @@ import java.util.ArrayList;
  */
 public class Disciplinas  {
     private String id;
-    private String creditos;
-    private String[] horarios; 
-    private String dia;
-    private String[] hora;
-    private String disciplina;
-    private String turma;      
+    public String creditos;
+    public String[] horarios; 
+    public String disciplina;
+    public String turma;      
     
     public Disciplinas(String linha){
        String[] array = linha.split(", ");       
@@ -30,6 +28,8 @@ public class Disciplinas  {
        for(int i = 0 ; i < array2.length;i++){
            horarios[i] = array2[i];
        }
+       setDisciplina(id);
+       setTurma(id);
     }
     public void setDisciplina(String id){
            this.disciplina = id.substring(0,1);
@@ -37,14 +37,6 @@ public class Disciplinas  {
     public void setTurma(String id){
        this.turma = id.substring(1, 2);
     }
-    public void setHorarios(String[] horarios){
-        /*  for(int i = 0 ; i < horarios.length;i++){
-                   this.dia = horarios[i].substring(0, 1);
-                    this.hora = horarios[i].substring(1, 3);
-       }
-         */
-    }
-    
     public void ShowIt(){
         setDisciplina(id);
         setTurma(id);
