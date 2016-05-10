@@ -5,10 +5,19 @@
  */
 package ts;
 
+import classes.Disciplinas;
+import java.util.ArrayList;
+
 /**
  *
  * @author Marlon Prudente <marlonoliveira@alunos.utfpr.edu.br>
  */
 public class Tempera {
+
+    private final ArrayList<Disciplinas> disciplinas;
+    
+    public Tempera(ArrayList<Disciplinas> disciplinas){
+        this.disciplinas = disciplinas;
+    }
     
 }
