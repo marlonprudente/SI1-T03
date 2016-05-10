@@ -35,8 +35,8 @@ public class Main {
         AgMain ag = new AgMain(disciplinas);
         Cromossomo cromo = ag.getMelhorCromossomo();
         System.out.println("Melhor Horário:");
-        cromo.calendario.ShowDisciplinas();
-        System.out.println("Creditos: "+cromo.calendario.creditos);
+        cromo.getCalendario().ShowDisciplinas();
+        System.out.println("Creditos: "+cromo.getCalendario().creditos);
         System.out.println("Fitness: "+ag.getFitness(cromo));
     }
 }

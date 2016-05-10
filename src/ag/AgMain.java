@@ -16,20 +16,26 @@ import java.util.Random;
 public class AgMain {
     ArrayList<Disciplinas> disciplinas;
     ArrayList<Cromossomo> cromossomos;
-    ArrayList<Cromossomo> cromossomosFilhos = new ArrayList<Cromossomo>();
+    ArrayList<Cromossomo> cromossomosFilhos;
     private int maxRandRoleta = 0;
+    private String discObri;
     
     public AgMain(ArrayList<Disciplinas> disciplinas){
         this.disciplinas = disciplinas;
-        setCromossomos(100);
-        for(int i=0;i<1;i++){
+        setCromossomos(50);
+        
+        setObrigatorias("ABCDEF");
+        showCromossomos();
+        for(int i=0;i<50;i++){
             System.out.println("Tentativa "+i);
             setRoleta();
             selecaoRoleta();
             crossover();
             selecaoMelhor();
+            //System.out.println("Range: "+maxRandRoleta);
+            showCromossomos();
         }
-        showCromossomos();
+        //showCromossomos();
     }
     public void setCromossomos(int numeroCromossomos){
         cromossomos = new ArrayList<Cromossomo>();
@@ -75,11 +81,13 @@ public class AgMain {
         return -1;
     }
     public void selecaoRoleta(){
-        cromossomosFilhos.clear();
+        cromossomosFilhos = new ArrayList<Cromossomo>();
         Random rand = new Random();
         for(int i=0;i<cromossomos.size();i++){
+              rand = new Random();
               int newCrom = getItemRoleta(rand.nextInt(maxRandRoleta));
-              cromossomosFilhos.add(cromossomos.get(newCrom));
+              
+              cromossomosFilhos.add(new Cromossomo(cromossomos.get(newCrom).getCalendario()));
         }
     }
     public void crossover(){
@@ -95,8 +103,8 @@ public class AgMain {
              if(!equalsGenes(cromossomosFilhos.get(i).genes,cromossomosFilhos.get(i+1).genes)){
              if(rand.nextInt(100) < chanceCrossover){
                  //Pega pares de cromossomo
-                 crom1 = cromossomosFilhos.get(i).calendario;
-                 crom2 = cromossomosFilhos.get(i+1).calendario;
+                 crom1 = cromossomosFilhos.get(i).getCalendario();
+                 crom2 = cromossomosFilhos.get(i+1).getCalendario();
                  
                     //Pega materias para crossover
                     tent1 = 0;
@@ -127,11 +135,12 @@ public class AgMain {
                         //cromossomosFilhos.get(i+1).calendario = crom2;
                         cromossomosFilhos.get(i+1).setGenes();
                         //######################
-                        System.out.println(i + " Crossover: "+id1.id+" "+id2.id);
+                        //System.out.println(i + " Crossover: "+id1.id+" "+id2.id);
                     }
                  }
              }
              else{
+                      System.out.println("teste mutação"+i);
                      cromossomosFilhos.get(i).mutacao(disciplinas);
              }
         }
@@ -141,10 +150,10 @@ public class AgMain {
         for(int i=0;i<cromossomos.size();i++){
             fit1 = getFitness(cromossomos.get(i));
             fit2 = getFitness(cromossomosFilhos.get(i));
+            
             if(fit2>fit1){
-                cromossomos.get(i).calendario = cromossomosFilhos.get(i).calendario;
-                cromossomos.get(i).setGenes();
-                System.out.println("filho melhor "+i);
+                cromossomos.get(i).setCalendario(new Calendario(cromossomosFilhos.get(i).getCalendario()));
+                //System.out.println(i+"filho melhor "+fit1+" "+fit2+" "+getFitness(cromossomos.get(i)));
             }
         }       
     }
@@ -153,13 +162,15 @@ public class AgMain {
         int discSeguidas = 0;
         int diaUltimaAulaVerificada = 0;
         int janela = 0;
-        int Score = 1000;
+        int Score = 1;
+        int error = 0;
         for(int i=0;i<crom.genes.length;i++){
             //Verifica se existe duas disciplinas iguais, mas com turmas diferentes
             if(disciplinas.indexOf(crom.genes[i].substring(0,1)) >= 0){
                 
                 if(disciplinas.indexOf(crom.genes[i]) == -1){
-                    Score-=180;
+                    error++;
+                    
                     //System.out.println("disicplina repetida:"+crom.genes[i]);
                     disciplinas = disciplinas+crom.genes[i]+",";
                 }
@@ -169,16 +180,18 @@ public class AgMain {
             }
             //################
             //Contagens de aulas seguidas e janelas
-            if(crom.genes[i] != "00"){
+            if(!crom.genes[i].equals("00")){
                 //Verifica se existe mais de 5 aulas seguidas
                 if(discSeguidas>5){
                     //System.out.println("mais de 5 aulas seguidas "+i);
-                    Score-=120;
+                    error++;
                 }
                 //Verifica se existe 12 hora de intervalo entre a ultima aula do dia com a primeira do dia seguinte
                 if(diaUltimaAulaVerificada != i/16){
                     //System.out.println("12 horas errado "+i);
-                    if(janela<12)Score-=75; 
+                    if(janela<12){
+                        //error++;
+                    }
                 }
                 //######
                 diaUltimaAulaVerificada = i/16;
@@ -191,8 +204,14 @@ public class AgMain {
             }
             
         }
-        if(crom.getCreditos()>25)Score -= 200;
-        else Score+= 50*crom.getCreditos();
+        int faltantes = crom.getCalendario().obrigatoriasFaltante(discObri);
+        int obrigatorias = discObri.length();
+        if(crom.getCreditos()>25)error++;
+        if(faltantes>0)error++;
+        Score+= (obrigatorias-faltantes)*1000;
+        Score+= 100*crom.getCreditos();
+        if(Score<=0 || error>0)Score = 1;
+  
         //if(!crom.calendario.temTodasObrigatorias("ABCDEF"))Score = 1;
         //System.out.println("Creditos: "+creditos);
         return Score;
@@ -210,18 +229,12 @@ public class AgMain {
         return true;
     }
     public void showCromossomos(){
-        System.out.println("Pais");
         for(int i=0;i<cromossomos.size();i++){
-              System.out.print(i+":");
-              cromossomos.get(i).calendario.ShowDisciplinas();
-              System.out.println(getFitness(cromossomos.get(i)));
+              System.out.print(i+"::"+cromossomos.get(i).id+":: ");
+              System.out.print(getFitness(cromossomos.get(i))+" ");
+              cromossomos.get(i).getCalendario().ShowDisciplinas();
+              
         }
-        System.out.println("Filhos");
-        for(int i=0;i<cromossomosFilhos.size();i++){
-              System.out.print(i+":");
-              cromossomosFilhos.get(i).calendario.ShowDisciplinas();
-              System.out.println(getFitness(cromossomosFilhos.get(i)));
-        }  
     }
     public Cromossomo getMelhorCromossomo(){
         int melhor = 0;
@@ -232,8 +245,18 @@ public class AgMain {
               if(fit > melhor){
                   id = i;
                   melhor = fit;
-              } 
+              }
         }
         return cromossomos.get(id);
+    }
+    public void setObrigatorias(String discObrigatorias){
+        String obri = "";
+        for(int i=0;i<disciplinas.size();i++){      
+            if(discObrigatorias.indexOf(disciplinas.get(i).disciplina.substring(0,1))>=0){
+                discObrigatorias = discObrigatorias.replaceAll(disciplinas.get(i).disciplina.substring(0,1), "");
+                obri = obri+disciplinas.get(i).disciplina.substring(0,1);
+            }
+        }
+        discObri = obri;
     }
  }

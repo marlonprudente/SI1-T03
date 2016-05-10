@@ -14,11 +14,14 @@ import java.util.Random;
  * @author chris
  */
 public class Cromossomo {
-    public Calendario calendario;
+    public int id;
+    private Calendario calendario;
     public String[] genes = new String[5*16];
     
     public Cromossomo(Calendario calendario){
+        Random rand = new Random();
         this.calendario = calendario;
+        this.id = rand.nextInt(100000);
         setGenes();
     }
     public void setGenes(){
@@ -43,8 +46,10 @@ public class Cromossomo {
                 do{disc2 = disciplinas.get(rand.nextInt(disciplinas.size()));}while(disc2.id.equals(disc1.id));
                 tent++;
             }while(!calendario.insertDisciplina(disc2) && tent<20);
+            
             if(tent>=20)System.out.println("Mutação sem inserçao");
             else System.out.println("Mutação: "+disc1.id+" "+disc2.id);
+            setGenes();
         }
     }
     public int getCreditos(){
@@ -56,5 +61,12 @@ public class Cromossomo {
             StringGenes = StringGenes+genes[i]+",";
         }
         System.out.println(StringGenes);
+    }
+    public void setCalendario(Calendario calen){
+        calendario = calen;
+        setGenes();
+    }
+    public Calendario getCalendario(){
+        return calendario;
     }
 }

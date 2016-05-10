@@ -12,10 +12,15 @@ import java.util.ArrayList;
  * @author Marlon Prudente <marlonoliveira@alunos.utfpr.edu.br>
  */
 public class Calendario {
-    private String[][] calendario = new String[16][5];
+    public String[][] calendario = new String[16][5];
     public int creditos = 0;
     public ArrayList<Disciplinas> disciplinas = new ArrayList<Disciplinas>();
     public Calendario(){
+    }
+    public Calendario(Calendario calen){
+        this.calendario = calen.calendario;
+        this.creditos = calen.creditos;
+        this.disciplinas = calen.disciplinas;  
     }
     public boolean insertDisciplina(Disciplinas disc){   
         int dia;
@@ -39,7 +44,7 @@ public class Calendario {
     }
     public void removeDisciplina(Disciplinas disc){
         for(int i=0;i<disciplinas.size();i++){
-            if(disc.id.equals(disciplinas.get(i).id)){
+            if(disciplinas.get(i).id.equals(disc.id)){
                disciplinas.remove(i);
                break;
             }
@@ -78,15 +83,12 @@ public class Calendario {
         }
         return false;
     }
-    public boolean temTodasObrigatorias(String discObrigatorias){
+    public int obrigatoriasFaltante(String discObrigatorias){
         for(int i=0;i<disciplinas.size();i++){      
             if(discObrigatorias.indexOf(disciplinas.get(i).disciplina.substring(0,1))>=0){
-                System.out.println(disciplinas.get(i).disciplina.substring(0,1));
                 discObrigatorias = discObrigatorias.replaceAll(disciplinas.get(i).disciplina.substring(0,1), "");
             }
         }
-        System.out.println(discObrigatorias);
-        if(discObrigatorias.isEmpty())return true;
-        return false;
+        return discObrigatorias.length();
     }
 }
