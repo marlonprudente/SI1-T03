@@ -27,12 +27,16 @@ public class Main {
         BufferedReader reader = new BufferedReader(streamReader);
         String linha;
         ArrayList<Disciplinas> disciplinas = new ArrayList<Disciplinas>();
-        while(!(linha = reader.readLine()).isEmpty()){
+        while((linha = reader.readLine())!=null){
            Disciplinas disc = new Disciplinas(linha);
            disciplinas.add(disc);
         }
         //################
-        new AgMain(disciplinas);
-        
+        AgMain ag = new AgMain(disciplinas);
+        Cromossomo cromo = ag.getMelhorCromossomo();
+        System.out.println("Melhor Horário:");
+        cromo.calendario.ShowDisciplinas();
+        System.out.println("Creditos: "+cromo.calendario.creditos);
+        System.out.println("Fitness: "+ag.getFitness(cromo));
     }
 }

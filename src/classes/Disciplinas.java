@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * @author Marlon Prudente <marlonoliveira@alunos.utfpr.edu.br>
  */
 public class Disciplinas  {
-    private String id;
-    public String creditos;
+    public String id;
+    public int creditos;
     public String[] horarios; 
     public String disciplina;
     public String turma;      
@@ -22,7 +22,7 @@ public class Disciplinas  {
     public Disciplinas(String linha){
        String[] array = linha.split(", ");       
        id = array[0];
-       creditos = array[1];
+       creditos = Integer.parseInt(array[1]);
        String[] array2 = array[2].split(",");
        horarios = new String[array2.length];
        for(int i = 0 ; i < array2.length;i++){

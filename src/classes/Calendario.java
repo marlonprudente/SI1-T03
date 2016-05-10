@@ -5,13 +5,16 @@
  */
 package classes;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Marlon Prudente <marlonoliveira@alunos.utfpr.edu.br>
  */
 public class Calendario {
     private String[][] calendario = new String[16][5];
-    
+    public int creditos = 0;
+    public ArrayList<Disciplinas> disciplinas = new ArrayList<Disciplinas>();
     public Calendario(){
     }
     public boolean insertDisciplina(Disciplinas disc){   
@@ -21,16 +24,34 @@ public class Calendario {
         for(int i=0;i<disc.horarios.length;i++){
             dia = Integer.parseInt(disc.horarios[i].substring(0, 1))-2;
             hora = Integer.parseInt(disc.horarios[i].substring(1,3))-1;
-            System.out.println(dia+","+hora);
-            if(calendario[hora][dia] != null)return false;
+            if(calendario[hora][dia] != null){
+                return false;
+            }
         }
         for(int i=0;i<disc.horarios.length;i++){
             dia = Integer.parseInt(disc.horarios[i].substring(0, 1))-2;
             hora = Integer.parseInt(disc.horarios[i].substring(1,3))-1;
             calendario[hora][dia] = disc.disciplina+disc.turma;
         }
-
+        creditos += disc.creditos;
+        this.disciplinas.add(disc);
         return true;
+    }
+    public void removeDisciplina(Disciplinas disc){
+        for(int i=0;i<disciplinas.size();i++){
+            if(disc.id.equals(disciplinas.get(i).id)){
+               disciplinas.remove(i);
+               break;
+            }
+        }
+        for(int i = 0;i<5;i++){
+            for(int j = 0;j<16;j++){
+                if(calendario[j][i] != null){
+                   if(calendario[j][i].equals(disc.id))calendario[j][i] = null; 
+                }
+            }
+        }
+        creditos-=disc.creditos;
     }
     public String getDiciplina(int dia,int hora){
         return calendario[hora][dia];
@@ -41,5 +62,31 @@ public class Calendario {
                 System.out.println("Dia: " + (i + 2) + " Hora: " + (j + 7) + " -> " + calendario[j][i]);
             }
         }
+    }
+    public void ShowDisciplinas(){
+        String showDisc = "";
+        for(int i=0;i<disciplinas.size();i++){
+            showDisc += disciplinas.get(i).id+",";
+        }
+        System.out.println(showDisc);
+    }
+    public boolean existsDisciplina(String id){
+        for(int i=0;i<disciplinas.size();i++){
+            if(id.equals(disciplinas.get(i).id)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean temTodasObrigatorias(String discObrigatorias){
+        for(int i=0;i<disciplinas.size();i++){      
+            if(discObrigatorias.indexOf(disciplinas.get(i).disciplina.substring(0,1))>=0){
+                System.out.println(disciplinas.get(i).disciplina.substring(0,1));
+                discObrigatorias = discObrigatorias.replaceAll(disciplinas.get(i).disciplina.substring(0,1), "");
+            }
+        }
+        System.out.println(discObrigatorias);
+        if(discObrigatorias.isEmpty())return true;
+        return false;
     }
 }

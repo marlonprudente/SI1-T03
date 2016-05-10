@@ -6,16 +6,22 @@
 
 package ag;
 import classes.Calendario;
+import classes.Disciplinas;
+import java.util.ArrayList;
+import java.util.Random;
 /**
  *
  * @author chris
  */
 public class Cromossomo {
-    private Calendario calendario;
-    private String[] genes = new String[5*16];
+    public Calendario calendario;
+    public String[] genes = new String[5*16];
     
     public Cromossomo(Calendario calendario){
         this.calendario = calendario;
+        setGenes();
+    }
+    public void setGenes(){
         int alelo = 0;
         for(int dia=0;dia<5;dia++){
             for(int hora=0;hora<16;hora++){
@@ -25,11 +31,24 @@ public class Cromossomo {
             }
         }
     }
-    public String[] getGenes(){
-        return genes;
+    public void mutacao(ArrayList<Disciplinas> disciplinas){
+        Random rand = new Random();
+        int tent = 0;
+        if(rand.nextInt(1000) < 5){
+            Disciplinas disc1 = calendario.disciplinas.get(rand.nextInt(calendario.disciplinas.size()));
+            calendario.removeDisciplina(disc1);
+            
+            Disciplinas disc2;     
+            do{
+                do{disc2 = disciplinas.get(rand.nextInt(disciplinas.size()));}while(disc2.id.equals(disc1.id));
+                tent++;
+            }while(!calendario.insertDisciplina(disc2) && tent<20);
+            if(tent>=20)System.out.println("Mutação sem inserçao");
+            else System.out.println("Mutação: "+disc1.id+" "+disc2.id);
+        }
     }
-    public void Mutacao(){
-        
+    public int getCreditos(){
+        return calendario.creditos;
     }
     public void showGenes(){
         String StringGenes = "";
