@@ -2,6 +2,7 @@ package principal;
 
 import classes.*;
 import ag.*;
+import ts.*;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,10 +34,14 @@ public class Main {
         }
         //################
         AgMain ag = new AgMain(disciplinas);
+        Tempera t = new Tempera(disciplinas);
+        
         Cromossomo cromo = ag.getMelhorCromossomo();
         System.out.println("Melhor Horário:");
         cromo.getCalendario().ShowDisciplinas();
         System.out.println("Creditos: "+cromo.getCalendario().creditos);
         System.out.println("Fitness: "+ag.getFitness(cromo));
+        System.out.println("==============================================");
+        t.showCalend();
     }
 }

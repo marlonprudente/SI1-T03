@@ -63,9 +63,11 @@ public class Calendario {
     }
     public void ShowIt(){
         for(int i = 0;i<5;i++){
+            System.out.println("Dia: " + (i + 2));
             for(int j = 0;j<16;j++){
-                System.out.println("Dia: " + (i + 2) + " Hora: " + (j + 7) + " -> " + calendario[j][i]);
+                System.out.println("Hora: " + (j + 7) + " -> " + calendario[j][i]);
             }
+            System.out.print(" ");
         }
     }
     public void ShowDisciplinas(){
